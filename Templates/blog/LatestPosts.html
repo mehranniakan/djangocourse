@@ -1,0 +1,22 @@
+{% load static %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% for items in Posts %}
+    <div class="single-post-list d-flex flex-row align-items-center ">
+        <div class="thumb containers_latest">
+            <img class="img-fluid custom_image_latest" src="{{ items.Image.url }}" alt="">
+        </div>
+        <div class="details">
+            <a href="blog-single.html"><h6>{{ items.Title }}</h6></a>
+            <p>{{ items.Publish_date }}</p>
+        </div>
+    </div>
+{% endfor %}
+</body>
+</html>

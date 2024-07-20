@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {% load static %}
+    {% load Blog_Tags %}
+</head>
+<body>
+<div class="single-sidebar-widget post-category-widget">
+    <h4 class="category-title">Post Catgories</h4>
+    <ul class="cat-list">
+        {% for name,count in Categories.items %}
+            <li>
+                <a href={% url 'blog_categorys' name %} class="d-flex justify-content-between">
+                    <p>{{ name }}</p>
+                    <p>{{ count }}</p>
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+</body>
+</html>

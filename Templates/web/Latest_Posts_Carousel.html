@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="row">
+    <div class="active-recent-blog-carusel">
+        {% for posts in Posts %}
+            <div class="single-recent-blog-post item">
+                <div class="thumb">
+                    <img class="img-fluid" src="{{ posts.Image.url }}" alt="">
+                </div>
+                <div class="details">
+                    <div class="tags">
+                        <ul>
+                            {% for cats in posts.Category.all %}
+                                <li>
+                                    <a href="#">{{ cats }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <a href={% url 'single_blog' posts.id %}><h4 class="title">{{ posts.Title }}</h4></a>
+                    <p>
+                        {{ posts.Content|truncatewords:15 }}
+                    </p>
+                    <h6 class="date">{{ posts.Publish_date }}</h6>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+</body>
+</html>
