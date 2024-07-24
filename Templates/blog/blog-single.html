@@ -4,6 +4,8 @@
 {% load static %}
 {% load Blog_Tags %}
 {% load humanize %}
+{% load compress %}
+
 {% block content %}
     <body>
     <!-- start banner Area -->
@@ -48,7 +50,8 @@
                                 <p class="user-name col-lg-12 col-md-12 col-6"><a
                                         href="#">{{ Post.Author }}</a> <span
                                         class="lnr lnr-user"></span></p>
-                                <p class="date col-lg-12 col-md-12 col-6"><a href="#">{{ Post.Publish_date|date:'d-M-Y' }}</a> <span
+                                <p class="date col-lg-12 col-md-12 col-6"><a
+                                        href="#">{{ Post.Publish_date|date:'d-M-Y' }}</a> <span
                                         class="lnr lnr-calendar-full"></span></p>
                                 <p class="view col-lg-12 col-md-12 col-6"><a href="#">{% views_counter Post.id %}
                                     Views</a> <span
@@ -217,8 +220,8 @@
                         <form action="{% url 'single_blog' Post.id %}" method="post">
                             {% csrf_token %}
                             <div class="form-group form-inline">
-                                <div class="form-group col-lg-6 col-md-12 name" hidden = 'hidden'>
-                                    <input type="text" class="form-control" name="Post" value = 2 placeholder="Enter Name"
+                                <div class="form-group col-lg-6 col-md-12 name" hidden='hidden'>
+                                    <input type="text" class="form-control" name="Post" value=2 placeholder="Enter Name"
                                            onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Name'">
                                 </div>
                                 <div class="form-group col-lg-6 col-md-12 name">
@@ -345,20 +348,22 @@
     </section>
     <!-- End post-content Area -->
 {% endblock %}
-
-<script src="{% static 'js/vendor/jquery-2.2.4.min.js' %}"></script>
-<script src="{% static 'js/popper.min.js' %}"></script>
-<script src="{% static 'js/vendor/bootstrap.min.js' %}"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBhOdIF3Y9382fqJYt5I_sswSrEw5eihAA"></script>
-<script src="{% static 'js/jquery-ui.js' %}"></script>
-<script src="{% static 'js/easing.min.js' %}"></script>
-<script src="{% static 'js/hoverIntent.js' %}"></script>
-<script src="{% static 'js/superfish.min.js' %}"></script>
-<script src="{% static 'js/jquery.ajaxchimp.min.js' %}"></script>
-<script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
-<script src="{% static 'js/jquery.nice-select.min.js' %}"></script>
-<script src="{% static 'js/owl.carousel.min.js' %}"></script>
-<script src="{% static 'js/mail-script.js' %}"></script>
-<script src="{% static 'js/main.js' %}"></script>
+
+{% compress js %}
+    <script src="{% static 'js/vendor/jquery-2.2.4.min.js' %}"></script>
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <script src="{% static 'js/vendor/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/jquery-ui.js' %}"></script>
+    <script src="{% static 'js/easing.min.js' %}"></script>
+    <script src="{% static 'js/hoverIntent.js' %}"></script>
+    <script src="{% static 'js/superfish.min.js' %}"></script>
+    <script src="{% static 'js/jquery.ajaxchimp.min.js' %}"></script>
+    <script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
+    <script src="{% static 'js/jquery.nice-select.min.js' %}"></script>
+    <script src="{% static 'js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'js/mail-script.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+{% endcompress %}
 </body>
 </html>
