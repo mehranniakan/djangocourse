@@ -111,7 +111,15 @@ def search_blog(request):
         val = request.GET.get('SV')
         posts = Post.objects.filter(Status=True, Publish_date__lte=current_date)
         posts = posts.filter(Q(Content__contains=val) | Q(Title__contains=val))
-        context = {'Posts': posts}
+        pages = Paginator(posts, 3)
+        page_number = request.GET.get('Page')
+        try:
+            page_obj = pages.page(page_number)
+
+        except InvalidPage:
+            pages = Paginator(posts, 3)
+            page_obj = pages.get_page(1)
+        context = {'Posts': page_obj}
     return render(request, "blog/blog-home.html", context)
 
 

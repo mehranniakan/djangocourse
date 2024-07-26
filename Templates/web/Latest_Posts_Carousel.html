@@ -7,31 +7,44 @@
 </head>
 <body>
 <div class="row">
-    <div class="active-recent-blog-carusel">
-        {% for posts in Posts %}
-            <div class="single-recent-blog-post item">
-                <div class="thumb">
-                    <img class="img-fluid" src="{{ posts.Image.url }}" alt="">
-                </div>
-                <div class="details">
-                    <div class="tags">
-                        <ul>
-                            {% for cats in posts.Category.all %}
-                                <li>
-                                    <a href="#">{{ cats }}</a>
-                                </li>
-                            {% endfor %}
-                        </ul>
+
+    {% if Posts|length ==  0 %}
+        <div class="container"
+             style="width: 100% ;background-color: transparent !important; text-align: center ; font-size: 20px ;font-weight: 400 ;margin-bottom: 50px">
+            <p>
+                Nothing To Show !
+            </p>
+        </div>
+    {% else %}
+
+        <div class="active-recent-blog-carusel">
+            {% for posts in Posts %}
+                <div class="single-recent-blog-post item">
+                    <div class="thumb">
+                        <img class="img-fluid" src="{{ posts.Image.url }}" alt="">
                     </div>
-                    <a href={% url 'single_blog' posts.id %}><h4 class="title">{{ posts.Title }}</h4></a>
-                    <p>
-                        {{ posts.Content|truncatewords:15 }}
-                    </p>
-                    <h6 class="date">{{ posts.Publish_date }}</h6>
+                    <div class="details">
+                        <div class="tags">
+                            <ul>
+                                {% for cats in posts.Category.all %}
+                                    <li>
+                                        <a href="#">{{ cats }}</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <a href={% url 'single_blog' posts.id %}><h4 class="title">{{ posts.Title }}</h4></a>
+                        <p>
+                            {{ posts.Content|truncatewords:15 }}
+                        </p>
+                        <h6 class="date">{{ posts.Publish_date }}</h6>
+                    </div>
                 </div>
-            </div>
-        {% endfor %}
-    </div>
+            {% endfor %}
+        </div>
+
+    {% endif %}
 </div>
+
 </body>
 </html>

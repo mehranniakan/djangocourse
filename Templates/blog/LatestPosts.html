@@ -13,7 +13,7 @@
             <img class="img-fluid custom_image_latest" src="{{ items.Image.url }}" alt="">
         </div>
         <div class="details">
-            <a href="blog-single.html"><h6>{{ items.Title }}</h6></a>
+            <a href="{% url 'single_blog' items.id %}"><h6>{{ items.Title }}</h6></a>
             <p>{{ items.Publish_date }}</p>
         </div>
     </div>

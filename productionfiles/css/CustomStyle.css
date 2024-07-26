@@ -1,0 +1,23 @@
+
+.custom_image {
+    max-width: 50%;
+    max-height: 40%;
+}
+
+.containers {
+    background-color: transparent !important;
+    width: 60% !important;
+}
+
+.containers_latest {
+    width: 150px !important;
+    height: 50px !important;
+    background-color: transparent !important;
+
+}
+
+.custom_image_latest {
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+}

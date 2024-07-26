@@ -1,9 +1,12 @@
+from ckeditor.fields import RichTextField
+from ckeditor.widgets import CKEditorWidget
 from django.db import models
 
 # Create your models here.
 
 from django.contrib.auth.models import User
 from django.db import models
+from django_summernote.fields import SummernoteTextField
 from taggit.managers import TaggableManager
 
 
@@ -19,7 +22,7 @@ class Post(models.Model):
     id = models.IntegerField(primary_key=True)
     Author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     Title = models.CharField(max_length=255)
-    Content = models.TextField()
+    Content = RichTextField()
     Image = models.ImageField(upload_to='Blog/Images', default='default.jpg')
     Category = models.ManyToManyField(Category)
     Tags = TaggableManager()

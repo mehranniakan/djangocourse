@@ -19,7 +19,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-3qn$aihh0$z)gw+s_)7t(t%*q9#&%+h-z*$96-q8qd#s_k=%jg'
+SECRET_KEY = str(os.getenv('SECRET_KEY'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -32,6 +32,10 @@ ROBOTS_USE_SITEMAP = False
 
 SUMMERNOTE_THEME = 'bs4'
 
+SUMMERNOTE_CONFIG = {
+    # Using SummernoteWidget - iframe mode, default
+    'iframe': True,
+}
 X_FRAME_OPTIONS = "SAMEORIGIN"
 
 ACCOUNT_EMAIL_REQUIRED = True
@@ -63,6 +67,7 @@ INSTALLED_APPS = [
     'django.contrib.sitemaps',
     'robots',
     "taggit",
+    'ckeditor',
     "captcha",
     "custom_account",
     'django_summernote',
@@ -167,24 +172,25 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = BASE_DIR / 'productionfiles'
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'compressor.finders.CompressorFinder',
 )
-# STATICFILES_DIRS = [
-#     BASE_DIR / "static",
-# ]
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
 
-# COMPRESS_ENABLED = True
-# COMPRESS_ROOT = STATIC_ROOT ##django compressor
-# COMPRESS_OFFLINE = True
+COMPRESS_ENABLED = True
+COMPRESS_OFFLINE = True
+COMPRESS_ROOT = STATIC_ROOT
+COMPRESS_CSS_FILTERS = ["compressor.filters.cssmin.CSSMinFilter"]
+COMPRESS_JS_FILTERS = ["compressor.filters.jsmin.JSMinFilter"]
 #
 # if not COMPRESS_ENABLED: ##django compressor
 # COMPRESS_ENABLED = True
-# COMPRESS_CSS_FILTERS = ["compressor.filters.cssmin.CSSMinFilter"]
-# COMPRESS_JS_FILTERS = ["compressor.filters.jsmin.JSMinFilter"] ##django compressor
+
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'

@@ -90,150 +90,165 @@
     <!-- End top-category-widget Area -->
 
     <!-- Start post-content Area -->
-    <section class="post-content-area">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 posts-list">
-                    {% for p in Posts %}
-                        <div class="single-post row">
-                            <div class="col-lg-3  col-md-3 meta-details">
-                                <ul class="tags">
-                                    {% for cat in p.Category.all %}
-                                        {% if forloop.last %}
-                                            <li><a href={% url 'blog_categorys' cat %}>{{ cat }}</a></li>
-                                        {% else %}
-                                            <li><a href={% url 'blog_categorys' cat %}>{{ cat }}-</a></li>
-                                        {% endif %}
-                                    {% endfor %}
-                                </ul>
-                                <div class="user-details row">
-                                    <p class="user-name col-lg-12 col-md-12 col-6"><a
-                                            href={% url 'blog_authors' p.Author.username %}>{{ p.Author }}</a>
-                                        <span class="lnr lnr-user"></span>
+    {% if Posts|length ==  0 %}
+        <div class="container" style="background-color: transparent !important; text-align: center ; font-size: 20px ;font-weight: 400 ;margin-bottom: 50px">
+            <p>
+                Nothing To Show !
+            </p>
+        </div>
+    {% else %}
+        <section class="post-content-area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 posts-list">
+                        {% for p in Posts %}
+                            <div class="single-post row">
+                                <div class="col-lg-3  col-md-3 meta-details">
+                                    <ul class="tags">
+
+                                        {% for cat in p.Category.all %}
+                                            {% if forloop.last %}
+                                                <li><a href={% url 'blog_categorys' cat %}>{{ cat }}</a></li>
+                                            {% else %}
+                                                <li><a href={% url 'blog_categorys' cat %}>{{ cat }}-</a></li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </ul>
+                                    <div class="user-details row">
+                                        <p class="user-name col-lg-12 col-md-12 col-6"><a
+                                                href={% url 'blog_authors' p.Author.username %}>{{ p.Author }}</a>
+                                            <span class="lnr lnr-user"></span>
+                                        </p>
+                                        <p class="date col-lg-12 col-md-12 col-6"><a
+                                                href="#">{{ p.Publish_date|date:"d-M-Y" }}</a> <span
+                                                class="lnr lnr-calendar-full"></span></p>
+                                        <p class="view col-lg-12 col-md-12 col-6"><a href="#">{% views_counter p.id %}
+                                            Views</a> <span class="lnr lnr-eye"></span></p>
+                                        <p class="comments col-lg-12 col-md-12 col-6"><a
+                                                href="#">{% comments_count p.id %}
+                                            Comments</a> <span
+                                                class="lnr lnr-bubble"></span></p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-9 col-md-9 ">
+                                    <div class="feature-img">
+                                        <img class="img-fluid" src="{{ p.Image.url }}" alt="">
+                                    </div>
+                                    <a class="posts-title" href="{% url 'single_blog' p.id %}"><h3>{{ p.Title }}</h3>
+                                    </a>
+                                    <p class="excert">
+                                        {{ p.Content|text_sniper|safe }}
                                     </p>
-                                    <p class="date col-lg-12 col-md-12 col-6"><a
-                                            href="#">{{ p.Publish_date|date:"d-M-Y" }}</a> <span
-                                            class="lnr lnr-calendar-full"></span></p>
-                                    <p class="view col-lg-12 col-md-12 col-6"><a href="#">{% views_counter p.id %}
-                                        Views</a> <span class="lnr lnr-eye"></span></p>
-                                    <p class="comments col-lg-12 col-md-12 col-6"><a href="#">{% comments_count p.id %}
-                                        Comments</a> <span
-                                            class="lnr lnr-bubble"></span></p>
+                                    <a href="{% url 'single_blog' p.id %}" class="primary-btn">View More</a>
                                 </div>
                             </div>
-                            <div class="col-lg-9 col-md-9 ">
-                                <div class="feature-img">
-                                    <img class="img-fluid" src="{{ p.Image.url }}" alt="">
-                                </div>
-                                <a class="posts-title" href="{% url 'single_blog' p.id %}"><h3>{{ p.Title }}</h3></a>
-                                <p class="excert">
-                                    {{ p.Content|text_sniper|safe }}
-                                </p>
-                                <a href="{% url 'single_blog' p.id %}" class="primary-btn">View More</a>
-                            </div>
-                        </div>
-                    {% endfor %}
-                    <nav class="blog-pagination justify-content-center d-flex">
-                        <ul class="pagination">
-                            {% if Posts.has_previous %}
-                                <li class="page-item">
-                                    <a href="?Page={{ Posts.previous_page_number }}" class="page-link"
-                                       aria-label="Previous">
+                        {% endfor %}
+
+                        <nav class="blog-pagination justify-content-center d-flex">
+                            <ul class="pagination">
+                                {% if Posts.has_previous %}
+                                    <li class="page-item">
+                                        <a href="?Page={{ Posts.previous_page_number }}" class="page-link"
+                                           aria-label="Previous">
 		                                    <span aria-hidden="true">
 		                                        <span class="lnr lnr-chevron-left"></span>
 		                                    </span>
-                                    </a>
-                                </li>
-                            {% endif %}
-                            {% for page in Posts.paginator.page_range %}
-                                {% if page == Posts.number %}
-                                    <li class="page-item active"><a href="?Page={{ page }}"
-                                                                    class="page-link">{{ page }}</a></li>
-                                {% else %}
-                                    <li class="page-item"><a href="?Page={{ page }}" class="page-link">{{ page }}</a>
+                                        </a>
                                     </li>
                                 {% endif %}
+                                {% for page in Posts.paginator.page_range %}
+                                    {% if page == Posts.number %}
+                                        <li class="page-item active"><a href="?Page={{ page }}"
+                                                                        class="page-link">{{ page }}</a></li>
+                                    {% else %}
+                                        <li class="page-item"><a href="?Page={{ page }}"
+                                                                 class="page-link">{{ page }}</a>
+                                        </li>
+                                    {% endif %}
 
-                            {% endfor %}
-                            {% if Posts.has_next %}
-                                <li class="page-item">
-                                    <a href="?Page={{ Posts.next_page_number }}" class="page-link" aria-label="Next">
+                                {% endfor %}
+                                {% if Posts.has_next %}
+                                    <li class="page-item">
+                                        <a href="?Page={{ Posts.next_page_number }}" class="page-link"
+                                           aria-label="Next">
 		                                    <span aria-hidden="true">
 		                                        <span class="lnr lnr-chevron-right"></span>
 		                                    </span>
-                                    </a>
-                                </li>
-                            {% endif %}
-                        </ul>
-                    </nav>
-                </div>
-                <div class="col-lg-4 sidebar-widgets">
-                    <div class="widget-wrap">
-                        <div class="single-sidebar-widget search-widget">
-                            <form class="search-form" method="get" action={% url 'blog_search' %}>
-                                <input placeholder="Search Posts" name="SV" type="text"
-                                       onfocus="this.placeholder = ''" onblur="this.placeholder = 'Search Posts'">
-                                <button type="submit"><i class="fa fa-search"></i></button>
-                            </form>
-                        </div>
-                        {% include 'blog/Blog_Writer.html' %}
-                        <div class="single-sidebar-widget popular-post-widget">
-                            <h4 class="popular-title">Latest Posts</h4>
-                            <div class="popular-post-list">
-                                {% latest_posts %}
-                            </div>
-                        </div>
-                        <div class="single-sidebar-widget ads-widget">
-                            <a href="#"><img class="img-fluid" src={% static 'img/blog/ads-banner.jpg' %} alt=""></a>
-                        </div>
-                        {% Post_Category %}
-                        <div class="single-sidebar-widget newsletter-widget">
-                            <h4 class="newsletter-title">Newsletter</h4>
-                            <p>
-                                Here, I focus on a range of items and features that we use in life without
-                                giving them a second thought.
-                            </p>
-                            <div class=" d-flex flex-row">
-                                <div class="col-autos">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text"><i class="fa fa-envelope"
-                                                                             aria-hidden="true"></i>
-                                            </div>
-                                        </div>
-                                        <input type="text" class="form-control" id="inlineFormInputGroup"
-                                               placeholder="Enter email" onfocus="this.placeholder = ''"
-                                               onblur="this.placeholder = 'Enter email'">
-                                    </div>
-                                </div>
-                                <a href="#" class="bbtns">Subcribe</a>
-                            </div>
-                            <p class="text-bottom">
-                                You can unsubscribe at any time
-                            </p>
-                        </div>
-                        <div class="single-sidebar-widget tag-cloud-widget">
-                            <h4 class="tagcloud-title">Tag Clouds</h4>
-                            <ul>
-                                <li><a href="#">Technology</a></li>
-                                <li><a href="#">Fashion</a></li>
-                                <li><a href="#">Architecture</a></li>
-                                <li><a href="#">Fashion</a></li>
-                                <li><a href="#">Food</a></li>
-                                <li><a href="#">Technology</a></li>
-                                <li><a href="#">Lifestyle</a></li>
-                                <li><a href="#">Art</a></li>
-                                <li><a href="#">Adventure</a></li>
-                                <li><a href="#">Food</a></li>
-                                <li><a href="#">Lifestyle</a></li>
-                                <li><a href="#">Adventure</a></li>
+                                        </a>
+                                    </li>
+                                {% endif %}
                             </ul>
+                        </nav>
+                    </div>
+                    <div class="col-lg-4 sidebar-widgets">
+                        <div class="widget-wrap">
+                            <div class="single-sidebar-widget search-widget">
+                                <form class="search-form" method="get" action={% url 'blog_search' %}>
+                                    <input placeholder="Search Posts" name="SV" type="text"
+                                           onfocus="this.placeholder = ''" onblur="this.placeholder = 'Search Posts'">
+                                    <button type="submit"><i class="fa fa-search"></i></button>
+                                </form>
+                            </div>
+                            {% include 'blog/Blog_Writer.html' %}
+                            <div class="single-sidebar-widget popular-post-widget">
+                                <h4 class="popular-title">Latest Posts</h4>
+                                <div class="popular-post-list">
+                                    {% latest_posts %}
+                                </div>
+                            </div>
+                            <div class="single-sidebar-widget ads-widget">
+                                <a href="#"><img class="img-fluid"
+                                                 src={% static 'img/blog/ads-banner.jpg' %} alt=""></a>
+                            </div>
+                            {% Post_Category %}
+                            <div class="single-sidebar-widget newsletter-widget">
+                                <h4 class="newsletter-title">Newsletter</h4>
+                                <p>
+                                    Here, I focus on a range of items and features that we use in life without
+                                    giving them a second thought.
+                                </p>
+                                <div class=" d-flex flex-row">
+                                    <div class="col-autos">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text"><i class="fa fa-envelope"
+                                                                                 aria-hidden="true"></i>
+                                                </div>
+                                            </div>
+                                            <input type="text" class="form-control" id="inlineFormInputGroup"
+                                                   placeholder="Enter email" onfocus="this.placeholder = ''"
+                                                   onblur="this.placeholder = 'Enter email'">
+                                        </div>
+                                    </div>
+                                    <a href="#" class="bbtns">Subcribe</a>
+                                </div>
+                                <p class="text-bottom">
+                                    You can unsubscribe at any time
+                                </p>
+                            </div>
+                            <div class="single-sidebar-widget tag-cloud-widget">
+                                <h4 class="tagcloud-title">Tag Clouds</h4>
+                                <ul>
+                                    <li><a href="#">Technology</a></li>
+                                    <li><a href="#">Fashion</a></li>
+                                    <li><a href="#">Architecture</a></li>
+                                    <li><a href="#">Fashion</a></li>
+                                    <li><a href="#">Food</a></li>
+                                    <li><a href="#">Technology</a></li>
+                                    <li><a href="#">Lifestyle</a></li>
+                                    <li><a href="#">Art</a></li>
+                                    <li><a href="#">Adventure</a></li>
+                                    <li><a href="#">Food</a></li>
+                                    <li><a href="#">Lifestyle</a></li>
+                                    <li><a href="#">Adventure</a></li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    {% endif %}
     <!-- End post-content Area -->
     <!-- End footer Area -->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBhOdIF3Y9382fqJYt5I_sswSrEw5eihAA"></script>

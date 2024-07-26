@@ -82,17 +82,6 @@
                             {% endif %}
                     >Blog
                     </a></li>
-                    <li class="menu-has-children"><a href="">Pages</a>
-                        <ul>
-                            <li><a href="elements.html">Elements</a></li>
-                            <li class="menu-has-children"><a href="">Level 2 </a>
-                                <ul>
-                                    <li><a href="#">Item One</a></li>
-                                    <li><a href="#">Item Two</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
                     <li><a href="{% url 'contact' %}">Contact</a></li>
                 </ul>
             </nav><!-- #nav-menu-container -->
@@ -167,8 +156,8 @@
                             <ul>
                                 <li><a href="#">Team</a></li>
                                 <li><a href="#">Pricing</a></li>
-                                <li><a href="#">Blog</a></li>
-                                <li><a href="#">Contact</a></li>
+                                <li><a href="{% url 'home_blog' %}">Blog</a></li>
+                                <li><a href="{% url 'contact' %}">Contact</a></li>
                             </ul>
                         </div>
                     </div>
