@@ -22,4 +22,22 @@
             {% endelement %}
         {% endslot %}
     {% endelement %}
-{% endblock content %}
+    {% load static %}
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+        <link rel="stylesheet" type="text/css" href="{% static 'css/signout_alert.css' %}">
+
+    </head>
+    <body>
+    <div class="alert">
+        <button class = "btt" style="float: right"> ok</button>
+        <button class = "btt" style="float: right ;margin-right: 20px" onclick="this.parentElement.style.display='none';"> cancel</button>
+        Are you sure to Sign out :
+    </div>
+    </body>
+    </html>
+
+{#{% endblock content %}#}

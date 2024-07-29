@@ -23,7 +23,7 @@ def contact_us(request):
         if contact_form.is_valid():
             # if not bool(contact_form.data.get('Subject')):
             #     contact_form.instance.Subject = None
-            contact_form.instance.Name = "Unknown"
+            # contact_form.instance.Name = "Unknown"
             contact_form.save()
             messages.add_message(request, messages.SUCCESS, "You're Request has Successfuly Submitted !")
         else:
@@ -48,7 +48,7 @@ def News_letter(request):
         form = NewsLetterForm(request.POST)
 
         if form.is_valid():
-            print('here')
+
             check_duplicate = news_letter.objects.filter(Email=form.cleaned_data['Email']).count()
             if check_duplicate == 0:
                 form.save()

@@ -45,6 +45,7 @@ ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 ACCOUNT_SIGNUP_REDIRECT_URL = "/"
 
 ACCOUNT_FORMS = {'signup': 'custom_account.forms.MyCustomSignupForm'}
+#
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
@@ -67,7 +68,7 @@ INSTALLED_APPS = [
     'django.contrib.sitemaps',
     'robots',
     "taggit",
-    'ckeditor',
+    'django_quill',
     "captcha",
     "custom_account",
     'django_summernote',

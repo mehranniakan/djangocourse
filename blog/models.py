@@ -1,5 +1,4 @@
-from ckeditor.fields import RichTextField
-from ckeditor.widgets import CKEditorWidget
+
 from django.db import models
 
 # Create your models here.
@@ -8,6 +7,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django_summernote.fields import SummernoteTextField
 from taggit.managers import TaggableManager
+from django_quill.fields import QuillField
 
 
 class Category(models.Model):
@@ -19,10 +19,10 @@ class Category(models.Model):
 
 # Create your models here.
 class Post(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     Author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     Title = models.CharField(max_length=255)
-    Content = RichTextField()
+    Content = QuillField()
     Image = models.ImageField(upload_to='Blog/Images', default='default.jpg')
     Category = models.ManyToManyField(Category)
     Tags = TaggableManager()
@@ -37,7 +37,7 @@ class Post(models.Model):
 
 
 class Comment(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     Post = models.ForeignKey(Post, on_delete=models.CASCADE)
     Name = models.CharField(max_length=255)
     Email = models.EmailField()

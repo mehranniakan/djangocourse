@@ -3,6 +3,9 @@ from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 import datetime
+
+from taggit.models import Tag
+
 from blog.forms import PostCommentsForms
 from blog.models import Post, Comment
 
@@ -23,30 +26,58 @@ def home_blog(request, catname=None, auth_name=None, tagname=None):
             pages = Paginator(post, 3)
             page_obj = pages.get_page(1)
 
-        context = {'Posts': page_obj}
+        tags = Tag.objects.all()[0:14]
+
+        context = {'Posts': page_obj, 'Tags': tags}
         return render(request, "blog/blog-home.html", context)
 
     elif catname is not None and auth_name is None:
         now = timezone.now().date()
         posts = Post.objects.filter(Status=True, Publish_date__lte=now, Category__Name=catname)
-        context = {'Posts': posts}
+        pages = Paginator(posts, 3)
+        page_number = request.GET.get('Page')
+        try:
+            page_obj = pages.page(page_number)
+
+        except InvalidPage:
+            pages = Paginator(posts, 3)
+            page_obj = pages.get_page(1)
+
+        context = {'Posts': page_obj}
         return render(request, "blog/blog-home.html", context)
 
     elif catname is None and auth_name is not None:
         now = timezone.now().date()
         posts = Post.objects.filter(Status=True, Publish_date__lte=now, Author__username=auth_name)
-        context = {'Posts': posts}
+        pages = Paginator(posts, 3)
+        page_number = request.GET.get('Page')
+        try:
+            page_obj = pages.page(page_number)
+
+        except InvalidPage:
+            pages = Paginator(posts, 3)
+            page_obj = pages.get_page(1)
+
+        context = {'Posts': page_obj}
         return render(request, "blog/blog-home.html", context)
 
     elif catname is None and auth_name is None and tagname is not None:
         now = timezone.now().date()
-        posts = Post.objects.filter(Status=True, Publish_date__lte=now, tags__name__in=tagname)
-        context = {'Posts': posts}
+        posts = Post.objects.filter(Status=True, Publish_date__lte=now, Tags__name__in=[tagname])
+        pages = Paginator(posts, 3)
+        page_number = request.GET.get('Page')
+        try:
+            page_obj = pages.page(page_number)
+
+        except InvalidPage:
+            pages = Paginator(posts, 3)
+            page_obj = pages.get_page(1)
+
+        context = {'Posts': page_obj}
         return render(request, "blog/blog-home.html", context)
 
 
 def single_blog(request, pid):
-
     current_date = datetime.datetime.now(tz=timezone.utc)
     base_query = get_object_or_404(Post, pk=pid, Publish_date__lte=current_date, Status=True)
 
@@ -90,12 +121,13 @@ def single_blog(request, pid):
         form = PostCommentsForms(request.POST)
 
         if form.is_valid():
-            comment = Comment(Post_id=pid,
-                              Name=request.POST['Name'],
-                              Subject=request.POST['Subject'],
-                              Email=request.POST['Email'],
-                              Message=request.POST['Message'],
-                              )
+            comment = Comment(
+                Post_id=pid,
+                Name=request.POST['Name'],
+                Subject=request.POST['Subject'],
+                Email=request.POST['Email'],
+                Message=request.POST['Message'],
+            )
             comment.save()
         else:
             err = form.errors.as_data()

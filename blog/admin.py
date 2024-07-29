@@ -31,3 +31,5 @@ class CommentAdmin(admin.ModelAdmin):
     list_display = ('Post', 'Name', 'Email', 'Subject')
     list_filter = ('Approved',)
     search_fields = ('Subject', 'Message')
+
+
